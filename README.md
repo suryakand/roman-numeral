@@ -6,6 +6,12 @@ A sample REST API/Micro Service (Java/SpringBoot) implementation to convert Inte
 # Features
 
 # Build and Installation
+- Build maven project using command: `mvn clean install`
+- Run the project from command line: `mvn spring-boot:run`
+
+# Docker
+- Build docker image: `docker build -t adobe-assessment/roman-numeral .` (**NOTE**: Image name is `adobe-assessment/roman-numeral`)
+- Run docker image: `docker run -p 8080:8080 -t adobe-assessment/roman-numeral`
 
 # Testing
 
