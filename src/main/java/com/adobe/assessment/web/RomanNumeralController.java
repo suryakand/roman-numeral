@@ -1,10 +1,10 @@
 package com.adobe.assessment.web;
 
-import java.awt.print.Book;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,12 +30,19 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
  *
  */
 @RestController
+@PropertySource("classpath:application.properties")
 public class RomanNumeralController {
 	private Logger logger = LoggerFactory.getLogger(RomanNumeralServiceImpl.class);
 
 	@Autowired
 	private NumeralService<Integer, String> numeralService;
 
+	@Value("${limit.integer.range}")
+	private Integer limitIntegerRange;
+	
+	@Value("${limit.integer.range.extension.one}")
+	private Integer limitIntegerRangeExtensionOne;
+	
 	/**
 	 * REST API endpoint that validate whether provided Integer input is in rage or not (i.e. 1-255) 
 	 * and return a Roman representation of the provided Integer number.
@@ -56,7 +63,7 @@ public class RomanNumeralController {
 
 	@RequestMapping(value = "/romannumeral", method = RequestMethod.GET, produces = "application/json")
 	public IntegerToRomanResponse getRomanNumber(@RequestParam Integer romannumeral) {
-		if(romannumeral < 1 || romannumeral > 255) {
+		if(limitIntegerRange != -1 && (romannumeral < 1 || romannumeral > limitIntegerRange)) {
 			logger.error("{} is greater than valid range (1-255)", romannumeral);
 			throw new InvalidIntegerException();
 		} 
@@ -82,6 +89,10 @@ public class RomanNumeralController {
 	
 	@RequestMapping(value = "/romannumeral-extension-one", method = RequestMethod.GET, produces = "application/json")
 	public IntegerToRomanResponse getRomanNumberExtended(@RequestParam Integer romannumeral) {
+		if(limitIntegerRangeExtensionOne != -1 && (romannumeral < 1 || romannumeral > limitIntegerRangeExtensionOne)) {
+			logger.error("{} is greater than valid range (1-255)", romannumeral);
+			throw new InvalidIntegerException();
+		}		
 		return convertToRomanNumber(romannumeral);
 	}
 
