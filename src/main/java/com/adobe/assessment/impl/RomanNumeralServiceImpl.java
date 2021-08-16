@@ -21,12 +21,17 @@ import com.adobe.assessment.api.NumeralService;
 public class RomanNumeralServiceImpl implements NumeralService<Integer, String> {
 	private Logger logger = LoggerFactory.getLogger(RomanNumeralServiceImpl.class);
 
-	@Value("${numeral.mapping.decimal}")
 	private List<Integer> numeralInteger;
 
-	@Value("${numeral.mapping.roman}")
 	private List<String> numeralRoman;
 
+	public RomanNumeralServiceImpl(@Value("${numeral.mapping.decimal}") List<Integer> numeralInteger, 
+			@Value("${numeral.mapping.roman}") List<String> numeralRoman) {
+		
+		this.numeralInteger = numeralInteger;
+		this.numeralRoman = numeralRoman;
+		
+	}
 
 	@Override
 	public String convert(Integer num) {
