@@ -62,13 +62,13 @@ public class RomanNumeralController {
 	})
 
 	@RequestMapping(value = "/romannumeral", method = RequestMethod.GET, produces = "application/json")
-	public IntegerToRomanResponse getRomanNumber(@RequestParam Integer romannumeral) {
-		if(limitIntegerRange != -1 && (romannumeral < 1 || romannumeral > limitIntegerRange)) {
-			logger.error("{} is greater than valid range (1-255)", romannumeral);
+	public IntegerToRomanResponse getRomanNumber(@RequestParam Integer query) {
+		if(limitIntegerRange != -1 && (query < 1 || query > limitIntegerRange)) {
+			logger.error("{} is greater than valid range (1-255)", query);
 			throw new InvalidIntegerException();
 		} 
 
-		return convertToRomanNumber(romannumeral);
+		return convertToRomanNumber(query);
 	}
 
 	/**
@@ -88,12 +88,12 @@ public class RomanNumeralController {
 			 })
 	
 	@RequestMapping(value = "/romannumeral-extension-one", method = RequestMethod.GET, produces = "application/json")
-	public IntegerToRomanResponse getRomanNumberExtended(@RequestParam Integer romannumeral) {
-		if(limitIntegerRangeExtensionOne != -1 && (romannumeral < 1 || romannumeral > limitIntegerRangeExtensionOne)) {
-			logger.error("{} is greater than valid range (1-255)", romannumeral);
+	public IntegerToRomanResponse getRomanNumberExtended(@RequestParam Integer query) {
+		if(limitIntegerRangeExtensionOne != -1 && (query < 1 || query > limitIntegerRangeExtensionOne)) {
+			logger.error("{} is greater than valid range (1-255)", query);
 			throw new InvalidIntegerException();
 		}		
-		return convertToRomanNumber(romannumeral);
+		return convertToRomanNumber(query);
 	}
 
 	/**
