@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RomanNumeralController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">roman-numeral</a> &gt; <a href="index.source.html" class="el_package">com.adobe.assessment.web</a> &gt; <span class="el_source">RomanNumeralController.java</span></div><h1>RomanNumeralController.java</h1><pre class="source lang-java linenums">package com.adobe.assessment.web;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.adobe.assessment.api.NumeralService;
+import com.adobe.assessment.exception.InvalidIntegerException;
+import com.adobe.assessment.impl.RomanNumeralServiceImpl;
+import com.adobe.assessment.model.IntegerToRomanResponse;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
+/**
+ * 
+ * REST API controller with multiple endpoints with different boundary conditions 
+ * to return Roman numbers 
+ * 
+ * @author Suryakand Shinde
+ *
+ */
+@RestController
+@PropertySource(&quot;classpath:application.properties&quot;)
+<span class="fc" id="L34">public class RomanNumeralController {</span>
+<span class="fc" id="L35">	private Logger logger = LoggerFactory.getLogger(RomanNumeralServiceImpl.class);</span>
+
+	@Autowired
+	private NumeralService&lt;Integer, String&gt; numeralService;
+
+	@Value(&quot;${limit.integer.range}&quot;)
+	private Integer limitIntegerRange;
+	
+	@Value(&quot;${limit.integer.range.extension.one}&quot;)
+	private Integer limitIntegerRangeExtensionOne;
+	
+	/**
+	 * REST API endpoint that validate whether provided Integer input is in rage or not (i.e. 1-255) 
+	 * and return a Roman representation of the provided Integer number.
+	 * 
+	 * @param romannumeral
+	 * @return
+	 */
+
+	@Operation(summary = &quot;REST API endpoint that validate whether provided Integer input is in rage or not (i.e. 1-255)&quot;
+			+ &quot; and return a Roman representation of the provided Integer number.&quot;)
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = &quot;200&quot;, description = &quot;Returns a Roman Number&quot;, 
+					content = { @Content(mediaType = &quot;application/json&quot;, 
+					schema = @Schema(implementation = IntegerToRomanResponse.class)) }),
+			@ApiResponse(responseCode = &quot;400&quot;, description = &quot;Bad Request (Integer number out of range for this API)&quot;, 
+			content = @Content)
+	})
+
+	@RequestMapping(value = &quot;/romannumeral&quot;, method = RequestMethod.GET, produces = &quot;application/json&quot;)
+	public IntegerToRomanResponse getRomanNumber(@RequestParam Integer query) {
+<span class="pc bpc" id="L66" title="1 of 6 branches missed.">		if(limitIntegerRange != -1 &amp;&amp; (query &lt; 1 || query &gt; limitIntegerRange)) {</span>
+<span class="fc" id="L67">			logger.error(&quot;{} is greater than valid range (1-255)&quot;, query);</span>
+<span class="fc" id="L68">			throw new InvalidIntegerException();</span>
+		} 
+
+<span class="fc" id="L71">		return convertToRomanNumber(query);</span>
+	}
+
+	/**
+	 * An alternate REST API endpoint that does not validate whether the provided
+	 * Integer input is in rage or not?
+	 * 
+	 * @param romannumeral
+	 * @return
+	 */
+	
+	@Operation(summary = &quot;An alternate REST API endpoint that does not validate whether the provided&quot;
+			+ &quot; Integer input is in rage or not?&quot;)
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = &quot;200&quot;, description = &quot;Return a Roman Number&quot;, 
+					content = { @Content(mediaType = &quot;application/json&quot;, 
+					schema = @Schema(implementation = IntegerToRomanResponse.class)) })
+			 })
+	
+	@RequestMapping(value = &quot;/romannumeral-extension-one&quot;, method = RequestMethod.GET, produces = &quot;application/json&quot;)
+	public IntegerToRomanResponse getRomanNumberExtended(@RequestParam Integer query) {
+<span class="pc bpc" id="L92" title="1 of 6 branches missed.">		if(limitIntegerRangeExtensionOne != -1 &amp;&amp; (query &lt; 1 || query &gt; limitIntegerRangeExtensionOne)) {</span>
+<span class="fc" id="L93">			logger.error(&quot;{} is greater than valid range (1-255)&quot;, query);</span>
+<span class="fc" id="L94">			throw new InvalidIntegerException();</span>
+		}		
+<span class="fc" id="L96">		return convertToRomanNumber(query);</span>
+	}
+
+	/**
+	 * This method simply converts a given Integer to Roman number. 
+	 * It is a reusable method that can be called from multiple controller methods.
+	 *  
+	 * @param romannumeral
+	 * @return {@link IntegerToRomanResponse}
+	 */
+	protected IntegerToRomanResponse convertToRomanNumber(Integer romannumeral) {
+<span class="fc" id="L107">		logger.debug(&quot;Request received to convert Integer value {} to Roman number&quot;, romannumeral);</span>
+
+<span class="fc" id="L109">		IntegerToRomanResponse resposne = new IntegerToRomanResponse();</span>
+
+<span class="fc" id="L111">		resposne.setInput(romannumeral);</span>
+<span class="fc" id="L112">		resposne.setOutput(numeralService.convert(romannumeral));</span>
+
+<span class="fc" id="L114">		return resposne;</span>
+	}
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
