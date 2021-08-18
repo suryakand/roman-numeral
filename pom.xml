@@ -64,6 +64,23 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			
+			<!-- Plug-in for executing integration tests only -->
+		   <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-failsafe-plugin</artifactId>
+		        <executions>
+		            <execution>
+		                <id>it-tests</id>
+		                <phase>none</phase> 
+		                <configuration>
+		                    <includes>
+		                        <include>**/*IntegrationTest.java</include>
+		                    </includes>
+		                </configuration>
+		            </execution>
+		        </executions>
+		    </plugin>
+    
 			<!-- JoCoCo Test Coverage Report Plug-in -->
 			<plugin>
 			    <groupId>org.jacoco</groupId>

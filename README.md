@@ -32,8 +32,8 @@ To build and run this project you would need:
 - To see sample report generate open `index.html` file in `code-coverage-report` folder
 
 ## Integration Tests
-- TBD (Need to add some integration test that can be run separately from unit tests)
-- Need to ensure that these test can be integrated with CI/CD pipeline
+- Execute command `mvn failsafe:integration-test@it-tests` to run only integration tests. This command can be used as part of CI/CD pipeline to execute Integration Tests separately.
+- TBD (Need to add more integration test)
 
 # Docker
 - Build docker image: `docker build -t adobe-assessment/roman-numeral .` (**NOTE:** Image name is `adobe-assessment/roman-numeral`)
