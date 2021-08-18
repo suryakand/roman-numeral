@@ -12,6 +12,11 @@ Main features of this application
 - Monitoring (Extension 3, using Spring Actuator): http://localhost:8080/actuator (Also, refer section [DevOps and Monitoring](#devops-and-monitoring) below)
 - Docker: Refer section [Docker](#docker) below
 
+# Screenshots
+## Code Coverage ![Code Coverage](https://raw.githubusercontent.com/suryakand/roman-numeral/main/assets/code-coverage.png "Code Coverage")
+## Swagger OpenApi ![Swagger OpenApi](https://raw.githubusercontent.com/suryakand/roman-numeral/main/assets/swagger-openapi.png "Swagger OpenApi")
+
+
 # Getting Started
 To build and run this project you would need:
 - Java 1.8+
