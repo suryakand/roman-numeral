@@ -7,8 +7,8 @@ Main features of this application
 - Swagger/Open API implementation: Swagger UI for this project can be accessed here: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 - Control behavior of API using externalized configurations (using property file or environment variables)
 - Unit testing with code coverage report (using JaCoCo)
-- Feature (REST API# 1, Supported Range 1-255): http://localhost:8080/romannumeral?romannumeral=212 (Range can be controlled using configuration in `application.properties` file. See `limit.integer.range` configuration)
-- Feature (REST API# 2 - Extension 1, Range 1-3999): Support for Any Integer number: http://localhost:8080/romannumeral-extension-one?romannumeral=3999 (Range can be controlled using configuration in `application.properties` file. See `limit.integer.range.extension.one` configuration)
+- Feature (REST API# 1, Supported Range 1-255): http://localhost:8080/romannumeral?query=212 (Range can be controlled using configuration in `application.properties` file. See `limit.integer.range` configuration)
+- Feature (REST API# 2 - Extension 1, Range 1-3999): Support for Any Integer number: http://localhost:8080/romannumeral-extension-one?query=3999 (Range can be controlled using configuration in `application.properties` file. See `limit.integer.range.extension.one` configuration)
 - Monitoring (Extension 3, using Spring Actuator): http://localhost:8080/actuator (Also, refer section [DevOps and Monitoring](#devops-and-monitoring) below)
 - Docker: Refer section [Docker](#docker) below
 
